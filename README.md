@@ -32,5 +32,5 @@ You can install directly from github using the devtools R package.
 
 ```{r}
 # install.packages("devtools")
-devtools::install_github("/DavidASmith/wordler")
+devtools::install_github("DavidASmith/wordler")
 ```
