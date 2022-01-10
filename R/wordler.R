@@ -62,7 +62,7 @@ make_empty_assess_matrix <- function() {
 play_wordler <- function(){
 
   # Select a target word
-  all_words <- qdap_dict
+  all_words <- ubuntu_dict
   word <- sample(all_words, 1)
 
   # Initialise game state

@@ -1,1 +1,1 @@
-globalVariables(c("qdap_dict"))
+globalVariables(c("qdap_dict", "ubuntu_dict"))
