@@ -16,6 +16,14 @@ knitr::opts_chunk$set(
 
 This package lets you play a version of the [WORDLE game](https://www.powerlanguage.co.uk/wordle/) in R. You can either play interactively in the console, or programmatically to explore different solvers (for example).
 
+Players must attempt to correctly guess a five-letter word in (at most) six attempts.
+
+After each guess, the letters are coloured to indicate how well the guess matches the target word.
+
+Green letters are in the word and in the right position (but may be repeated elsewhere). Yellow letters are present (at least once) somewhere in the target word.
+
+Each guess must be a valid word.
+
 # Load the package
 
 First, load the package.
