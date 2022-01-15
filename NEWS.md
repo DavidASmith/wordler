@@ -1,6 +1,6 @@
 # wordler 0.2.0
 
-- Game is now playable programatically, rather than via console only.
+- Game is now playable programmatically, rather than via console only.
 - Added keyboard style display of letters known to be in word, known to be in 
   right position, or known not to be in the word.
 

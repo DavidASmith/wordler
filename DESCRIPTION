@@ -8,7 +8,7 @@ Description: An R implementation of the 'Wordle' game. Players have six attempts
     to guess a five-letter word. After each guess, the player is informed which 
     letters in their guess are either: anywhere in the word; in the right 
     position in the word. This can be used to inform the next guess. Can be 
-    played interactively in the console, or programatically.
+    played interactively in the console, or programmatically.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Imports:
