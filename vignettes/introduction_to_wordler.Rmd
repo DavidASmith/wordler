@@ -1,0 +1,122 @@
+---
+title: "Introduction to wordler"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to wordler}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This package lets you play a version of the [WORDLE game](https://www.powerlanguage.co.uk/wordle/) in R. You can either play interactively in the console, or programmatically to explore different solvers (for example).
+
+# Load the package
+
+First, load the package.
+
+```{r setup}
+library(wordler)
+```
+
+# Playing a game in the console
+
+To play a game in the console, call the `play_wordler()` function.
+
+```{r}
+# Commented out so vignette can be generated
+#play_wordler()
+```
+
+# Playing a game programatically
+
+## Initialise a new game
+
+First, initialise a new game.
+
+```{r}
+game <- make_new_game()
+```
+
+This returns a list which represents the game state. We'll have a look at the items in this list after we've made a few guesses.
+
+## Make a guess
+
+Use `have_a_guess()` to submit a guess of the target word. We'll make a few guesses below.
+
+```{r}
+game <- have_a_guess("SQUID", game)
+game <- have_a_guess("VIDEO", game)
+```
+
+## Game state
+
+Now let's look what's happening in the game object.
+
+We have an item which represents whether the game is over, or still in play.
+
+```{r}
+game$game_over
+```
+
+This is set to `TRUE` if either the word is correctly guessed, or all guesses are used.
+
+The `game_won` item indicates if the target word has been guessed correctly.
+
+```{r}
+game$game_won
+```
+
+The number of guesses made so far is held in the `guess_count` item.
+
+```{r}
+game$guess_count
+```
+
+The word we're trying to guess is held in the `target` item.
+
+```{r}
+game$target
+```
+
+The list of guesses so far is available in the `guess` item.
+
+```{r}
+game$guess
+```
+
+The `assess` item is a list holding the assessments of each guess.
+
+```{r}
+game$assess
+```
+
+At any time, we can print the status of the game as follows.
+
+```{r}
+print_game(game)
+```
+
+A vector of letters known to _not_ be in the target word is available.
+
+```{r}
+game$letters_known_not_in_word
+```
+
+A vector of letters known to be in the target word is available.
+
+```{r}
+game$letters_known_in_word
+```
+
+A vector of letters know to be in the right position in the target word is available.
+
+```{r}
+game$letters_known_in_position
+```
+
