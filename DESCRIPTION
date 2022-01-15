@@ -1,7 +1,7 @@
 Package: wordler
 Type: Package
 Title: An R Implementation of the 'Wordle' Game
-Version: 0.2.0.9000
+Version: 0.2.0
 Authors@R: person("David", "Smith", email = "david.alex.smith@gmail.com",
   role = c("aut", "cre"))
 Description: An R implementation of the 'Wordle' game. Players have six attempts 
