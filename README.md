@@ -1,3 +1,7 @@
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/DavidASmith/wordler/workflows/R-CMD-check/badge.svg)](https://github.com/DavidASmith/wordler/actions)
+<!-- badges: end -->
+
 # wordler
 
 An R implementation of the popular 
