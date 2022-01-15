@@ -4,12 +4,10 @@
 \alias{assess_guess}
 \title{Assess a guess against the target word}
 \usage{
-assess_guess(guess, word)
+assess_guess(game)
 }
 \arguments{
-\item{guess}{The guess. Character vector of length 1.}
-
-\item{word}{The target word. Single row character matrix.}
+\item{game}{Wordler game object.}
 }
 \value{
 Character vector of guess assessment.

@@ -2,10 +2,10 @@
 % Please edit documentation in R/wordler.R
 \name{play_wordler}
 \alias{play_wordler}
-\title{Play a game of Wordle in R}
+\title{Play a game of Wordle in the R console}
 \usage{
 play_wordler()
 }
 \description{
-Play a game of Wordle in R
+Play a game of Wordle in the R console
 }
