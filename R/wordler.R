@@ -59,7 +59,6 @@ count_freqs <- function(xs, target) {
 #' @param game Wordler game object.
 #' @return bool
 check_guess_hard_mode <- function(guess, game) {
-  browser()
   if (!game$hard_mode) {
     return(TRUE)
   }
