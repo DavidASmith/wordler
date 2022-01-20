@@ -100,7 +100,7 @@ make_new_game <- function(){
   new_game <- list(game_over = FALSE,
                    game_won = FALSE,
                    guess_count = 0,
-                   target = sample(ubuntu_dict, 1),
+                   target = sample(wordler::ubuntu_dict, 1),
                    guess = list(unlist(strsplit("_____", "")),
                                 unlist(strsplit("_____", "")),
                                 unlist(strsplit("_____", "")),
@@ -158,7 +158,7 @@ have_a_guess <- function(x, game){
   }
 
   # Guess must be in word list
-  if(!(x %in% ubuntu_dict)){
+  if(!(x %in% wordler::ubuntu_dict)){
     message("Your word isn't in the list of valid words. Try again.")
   } else {
 
