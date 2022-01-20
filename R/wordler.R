@@ -53,16 +53,68 @@ count_freqs <- function(xs, target) {
   lapply(xs, function(x) sum(target == x))
 }
 
+#' Check current guess complies with hard_mode rules
+#'
+#' @param guess The guess
+#' @param game Wordler game object.
+#' @return bool
+check_guess_hard_mode <- function(guess, game) {
+  browser()
+  if (!game$hard_mode) {
+    return(TRUE)
+  }
+  if (game$guess_count == 0) {
+    return(TRUE)
+  }
+  last_assess <- game$assess[[game$guess_count]]
+  last_guess <- game$guess[[game$guess_count]]
+  # Require in_position letters in last guess to match guess
+  in_position <- last_assess == "in_position"
+  guess_match <- last_guess == guess
+  if (!all(ifelse(in_position, guess_match, TRUE))) {
+    wrong <- !guess_match & in_position
+    mapply(function(wrong, index) {
+      if (wrong) {
+        message(get_ordinal(index), " letter must be '", last_guess[[index]], "'")
+      }
+    },
+    wrong, seq_along(wrong)
+    )
+    return(FALSE)
+  }
+  # Require in_word letters in last guess to be in guess
+  in_word <- last_assess == "in_word"
+  in_guess <- guess %in% last_guess
+  if (!all(ifelse(in_word, in_guess, TRUE))) {
+    wrong <- !in_guess & in_word
+    mapply(function(wrong, index) {
+      if (wrong) {
+        message("'", last_guess[[index]], "' must be in word")
+      }
+    },
+    wrong, seq_along(wrong)
+    )
+    return(FALSE)
+  }
+
+  # Else all good
+  return(TRUE)
+}
+
+get_ordinal <- function(x) {
+  switch(x, "1st", "2nd", "3rd", "4th", "5th")
+}
+
 
 #' Play a game of Wordle in the R console
 #'
 #' @export
-play_wordler <- function(){
+play_wordler <- function(hard_mode = FALSE){
 
   print_instructions()
 
   # Create a new game
-  game <- make_new_game()
+  game <- make_new_game(hard_mode)
 
   while(!game$game_over){
     print_game(game)
@@ -96,26 +148,35 @@ play_wordler <- function(){
 #' @export
 #'
 #' @examples
-make_new_game <- function(){
-  new_game <- list(game_over = FALSE,
-                   game_won = FALSE,
-                   guess_count = 0,
-                   target = sample(wordler::ubuntu_dict, 1),
-                   guess = list(unlist(strsplit("_____", "")),
-                                unlist(strsplit("_____", "")),
-                                unlist(strsplit("_____", "")),
-                                unlist(strsplit("_____", "")),
-                                unlist(strsplit("_____", "")),
-                                unlist(strsplit("_____", ""))),
-                   assess = list(rep("not_in_word", 5),
-                                 rep("not_in_word", 5),
-                                 rep("not_in_word", 5),
-                                 rep("not_in_word", 5),
-                                 rep("not_in_word", 5),
-                                 rep("not_in_word", 5)),
-                   keyboard = list(row1 = c("Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"),
-                                   row2 = c("A", "S", "D", "F", "G", "H", "J", "K", "L"),
-                                   row3 = c("Z", "X", "C", "V", "B", "N", "M")))
+make_new_game <- function(hard_mode = FALSE) {
+  new_game <- list(
+    hard_mode = hard_mode,
+    game_over = FALSE,
+    game_won = FALSE,
+    guess_count = 0,
+    target = sample(wordler::ubuntu_dict, 1),
+    guess = list(
+      unlist(strsplit("_____", "")),
+      unlist(strsplit("_____", "")),
+      unlist(strsplit("_____", "")),
+      unlist(strsplit("_____", "")),
+      unlist(strsplit("_____", "")),
+      unlist(strsplit("_____", ""))
+    ),
+    assess = list(
+      rep("not_in_word", 5),
+      rep("not_in_word", 5),
+      rep("not_in_word", 5),
+      rep("not_in_word", 5),
+      rep("not_in_word", 5),
+      rep("not_in_word", 5)
+    ),
+    keyboard = list(
+      row1 = c("Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"),
+      row2 = c("A", "S", "D", "F", "G", "H", "J", "K", "L"),
+      row3 = c("Z", "X", "C", "V", "B", "N", "M")
+    )
+  )
 }
 
 #' Establish if guess is correct and set game state accordingly
@@ -150,39 +211,45 @@ is_guess_correct <- function(game){
 #' @export
 #'
 #' @examples
-have_a_guess <- function(x, game){
+have_a_guess <- function(x, game) {
 
   # Game must not be already over
-  if(game$game_over){
+  if (game$game_over) {
     message("The game is already over. Start a new one if you want to play again.")
   }
 
   # Guess must be in word list
-  if(!(x %in% wordler::ubuntu_dict)){
+  if (!(x %in% wordler::ubuntu_dict)) {
     message("Your word isn't in the list of valid words. Try again.")
-  } else {
+    return(game)
+  }
 
-    # Player has used a guess
-    game$guess_count <- game$guess_count + 1
 
-    # Add guess to game
-    game$guess[[game$guess_count]] <- unlist(strsplit(x, ""))
+  if (!check_guess_hard_mode(unlist(strsplit(x, "")), game)) {
+    return(game)
+  }
 
-    # Assess guess
-    game <- assess_guess(game)
 
-    # Update known letters
-    game <- update_letters_known_not_in_word(game)
-    game <- update_letters_known_in_word(game)
-    game <- update_letters_known_in_position(game)
+  # Player has used a guess
+  game$guess_count <- game$guess_count + 1
 
-    # Is guess correct?
-    game <- is_guess_correct(game)
+  # Add guess to game
+  game$guess[[game$guess_count]] <- unlist(strsplit(x, ""))
 
-    # Are guesses all used?
-    if(game$guess_count == 6){
-      game$game_over <- TRUE
-    }
+  # Assess guess
+  game <- assess_guess(game)
+
+  # Update known letters
+  game <- update_letters_known_not_in_word(game)
+  game <- update_letters_known_in_word(game)
+  game <- update_letters_known_in_position(game)
+
+  # Is guess correct?
+  game <- is_guess_correct(game)
+
+  # Are guesses all used?
+  if (game$guess_count == 6) {
+    game$game_over <- TRUE
   }
   game
 }
