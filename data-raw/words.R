@@ -22,7 +22,13 @@ ubuntu_dict <- toupper(ubuntu_dict)
 ubuntu_dict
 
 
+# Load words used by original WORDLE game
+wordle_answers <- readLines("data-raw/wordle-answers-alphabetical.txt")
+wordle_allowed <- readLines("data-raw/wordle-allowed-guesses.txt")
+
 # Add to package external data --------------------------------------------
 usethis::use_data(qdap_dict,
                   ubuntu_dict,
+                  wordle_answers,
+                  wordle_allowed,
                   overwrite = TRUE)
