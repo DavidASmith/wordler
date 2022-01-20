@@ -41,7 +41,7 @@ To play a game in the console, call the `play_wordler()` function.
 #play_wordler()
 ```
 
-# Playing a game programatically
+# Playing a game programmatically
 
 ## Initialise a new game
 

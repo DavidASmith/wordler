@@ -4,7 +4,7 @@
 #' Data Set as returned by qdapDictionaries::dictionaries().
 #'
 #' @format A character vector of length 2488:
-#' @source \url{https://cran.r-project.org/web/packages/qdapDictionaries/index.html}
+#' @source \url{https://CRAN.R-project.org/package=qdapDictionaries}
 "qdap_dict"
 
 #' All five-letter words from the Ubuntu dictionary.
