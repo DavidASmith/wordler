@@ -83,7 +83,7 @@ check_guess_hard_mode <- function(guess, game) {
   }
   # Require in_word letters in last guess to be in guess
   in_word <- last_assess == "in_word"
-  in_guess <- guess %in% last_guess
+  in_guess <- last_guess %in% guess
   if (!all(ifelse(in_word, in_guess, TRUE))) {
     wrong <- !in_guess & in_word
     mapply(function(wrong, index) {
