@@ -4,7 +4,10 @@
 \alias{make_new_game}
 \title{Make a new blank wordle game}
 \usage{
-make_new_game()
+make_new_game(hard_mode = FALSE)
+}
+\arguments{
+\item{hard_mode}{Flag if game is in hard mode}
 }
 \value{
 A list representing the Wordle game.

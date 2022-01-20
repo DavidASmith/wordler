@@ -53,7 +53,7 @@ count_freqs <- function(xs, target) {
   lapply(xs, function(x) sum(target == x))
 }
 
-#' Check current guess complies with hard_mode rules
+#' Check if current guess complies with hard_mode rules
 #'
 #' @param guess The guess
 #' @param game Wordler game object.
@@ -107,6 +107,10 @@ get_ordinal <- function(x) {
 
 #' Play a game of Wordle in the R console
 #'
+#' @param hard_mode Flag if hard mode should be used. In hard mode each letter
+#'   in a correct position must be in the same position in future guesses, and
+#'   any letters in the word must be used in future guesses.
+#'
 #' @export
 play_wordler <- function(hard_mode = FALSE){
 
@@ -143,7 +147,9 @@ play_wordler <- function(hard_mode = FALSE){
 
 #' Make a new blank wordle game
 #'
+#' @param hard_mode Flag if game is in hard mode
 #' @return A list representing the Wordle game.
+#'
 #' @export
 #'
 #' @examples

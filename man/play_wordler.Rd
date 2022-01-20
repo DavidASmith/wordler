@@ -4,7 +4,12 @@
 \alias{play_wordler}
 \title{Play a game of Wordle in the R console}
 \usage{
-play_wordler()
+play_wordler(hard_mode = FALSE)
+}
+\arguments{
+\item{hard_mode}{Flag if hard mode should be used. In hard mode each letter
+in a correct position must be in the same position in future guesses, and
+any letters in the word must be used in future guesses.}
 }
 \description{
 Play a game of Wordle in the R console
