@@ -1,8 +1,10 @@
-# wordler 0.2.1
-
+# Wordler 0.2.1
 - Updates to support CRAN resubmission:
     - Use canonical form of URL for link to qdapDictionaries package on CRAN.
     - Added link to original game in package DESCRIPTION.
+- Repeated letters in a guess are now only counted as being 'in_word' as many 
+  times as the letter appears in the word. See example at
+  https://www.reddit.com/r/wordle/comments/ry49ne/illustration_of_what_happens_when_your_guess_has/
 
 # wordler 0.2.0
 
