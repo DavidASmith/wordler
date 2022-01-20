@@ -5,16 +5,33 @@
 #'
 #' @return Character vector of guess assessment.
 assess_guess <- function(game){
-
   # Get required items from game object
   guess <- game$guess[[game$guess_count]]
   target <- unlist(strsplit(game$target, ""))
 
-  # Are letters in target word?
-  in_word <- unlist(lapply(guess, function(x) x %in% target))
-
   # Do letters match position in target word?
   in_position <- guess == target
+
+  # Letters that aren't in position can still be in word
+  to_check <- guess[!in_position]
+
+  # Lookup counts of remaining  guess letters in target word
+  lookup <- count_freqs(to_check, target[!in_position])
+
+  # We only count as many occurrences of a guess letter as
+  # are in the lookup as being in the word
+  in_word <- mapply(
+    function(idx, l) {
+      if (in_position[idx]) return(TRUE)
+      if (sum(lookup[[l]]) > 0) {
+        lookup[[l]] <<- lookup[[l]] - 1L
+        return(TRUE)
+      }
+      else FALSE
+    },
+    idx = 1:length(guess),
+    l = unlist(strsplit(guess, ""))
+  )
 
   # Build assessment vector
   assessment <- ifelse(in_word, "in_word", "not_in_word")
@@ -23,7 +40,17 @@ assess_guess <- function(game){
   # Add assessment to game object and return
   game$assess[[game$guess_count]] <- assessment
   game
+}
 
+#' Get counts of each letter in the target
+#'
+#' @param xs,target we count the occurrences of each element in
+#'     \code{xs} in \code{target}
+#' @return named list of elements of \code{xs} with counts
+count_freqs <- function(xs, target) {
+  xs <- unique(xs)
+  names(xs) <- xs
+  lapply(xs, function(x) sum(target == x))
 }
 
 

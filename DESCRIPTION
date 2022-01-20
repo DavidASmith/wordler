@@ -2,8 +2,10 @@ Package: wordler
 Type: Package
 Title: The 'Wordle' Game
 Version: 0.2.1
-Authors@R: person("David", "Smith", email = "david.alex.smith@gmail.com",
-  role = c("aut", "cre"))
+Authors@R: c(
+  person("David", "Smith", email = "david.alex.smith@gmail.com", role = c("aut", "cre")),
+  person("Gethin", "Davies", email = "grd.davies@gmail.com", role = "ctb")
+  )
 Description: The 'Wordle' game. Players have six attempts to guess a 
     five-letter word. After each guess, the player is informed which 
     letters in their guess are either: anywhere in the word; in the right 
@@ -20,5 +22,7 @@ Depends:
     R (>= 2.10)
 Suggests: 
     rmarkdown,
-    knitr
+    knitr,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
+Config/testthat/edition: 3
