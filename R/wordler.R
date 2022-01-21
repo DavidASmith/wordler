@@ -56,13 +56,33 @@ count_freqs <- function(xs, target) {
 
 #' Play a game of Wordle in the R console
 #'
+#' @param target_words A character vector of potential target words for the
+#' game. A word will be randomly selected from this vector as the target word
+#' to be guessed. Defaults to words used by the WORDLE game online
+#' (?wordler::wordle_answers) if not provided.
+#' @param allowed_words A character vector of valid words for the guess. Guess
+#' must be in this vector to be allowed. Defaults to words used by the WORDLE
+#' game online (?wordler::wordle_allowed) if not provided.
+#'
 #' @export
-play_wordler <- function(){
+play_wordler <- function(target_words = NULL, allowed_words = NULL){
 
   print_instructions()
 
+  # Establish default target words if none provided
+  if(is.null(target_words)){
+    target_words <- wordler::wordle_answers
+  }
+
+  # Establish default allowed words if none provided
+  if(is.null(allowed_words)){
+    allowed_words <- c(wordler::wordle_allowed,
+                       wordler::wordle_answers
+    )
+  }
+
   # Create a new game
-  game <- make_new_game()
+  game <- make_new_game(target_words)
 
   while(!game$game_over){
     print_game(game)
@@ -72,7 +92,9 @@ play_wordler <- function(){
     new_guess <- toupper(new_guess)
 
     # Make guess
-    game <- have_a_guess(new_guess, game)
+    game <- have_a_guess(new_guess,
+                         game,
+                         allowed_words)
 
     # Has the player guessed correctly?
     if(game$game_won){
@@ -92,15 +114,28 @@ play_wordler <- function(){
 
 #' Make a new blank wordle game
 #'
+#' @param target_words A character vector of potential target words for the
+#' game. A word will be randomly selected from this vector as the target word
+#' to be guessed. Defaults to words used by the WORDLE game online
+#' (?wordler::wordle_answers) if not provided.
+#'
 #' @return A list representing the Wordle game.
 #' @export
 #'
 #' @examples
-make_new_game <- function(){
+make_new_game <- function(target_words = NULL){
+
+  # Take target from default if not specified
+  if(is.null(target_words)){
+    target <- sample(wordler::wordle_answers, 1)
+  } else {
+    target <- sample(target_words, 1)
+  }
+
   new_game <- list(game_over = FALSE,
                    game_won = FALSE,
                    guess_count = 0,
-                   target = sample(wordler::ubuntu_dict, 1),
+                   target = target,
                    guess = list(unlist(strsplit("_____", "")),
                                 unlist(strsplit("_____", "")),
                                 unlist(strsplit("_____", "")),
@@ -145,12 +180,15 @@ is_guess_correct <- function(game){
 #'
 #' @param x The guess.
 #' @param game The wordler game object.
+#' @param allowed_words A character vector of valid words for the guess. Guess
+#' must be in this vector to be allowed. Defaults to words used by the WORDLE
+#' game online (?wordler::wordle_allowed) if not provided.
 #'
 #' @return A wordler game object.
 #' @export
 #'
 #' @examples
-have_a_guess <- function(x, game){
+have_a_guess <- function(x, game, allowed_words){
 
   # Game must not be already over
   if(game$game_over){
@@ -158,7 +196,7 @@ have_a_guess <- function(x, game){
   }
 
   # Guess must be in word list
-  if(!(x %in% wordler::ubuntu_dict)){
+  if(!(x %in% allowed_words)){
     message("Your word isn't in the list of valid words. Try again.")
   } else {
 

@@ -1,3 +1,10 @@
+# Wordler 0.3.0
+- Updates for CRAN resubmission:
+    - URL in DESCRIPTION enclosed in angle brackets.
+- Default word list is now that used by the original wordle game.
+- User can specify word list to be used to both select a target and validate 
+  guesses.  
+
 # Wordler 0.2.1
 - Updates to support CRAN resubmission:
     - Use canonical form of URL for link to qdapDictionaries package on CRAN.

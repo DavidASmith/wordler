@@ -4,12 +4,16 @@
 \alias{have_a_guess}
 \title{Submit a guess word to the wordler game object}
 \usage{
-have_a_guess(x, game)
+have_a_guess(x, game, allowed_words)
 }
 \arguments{
 \item{x}{The guess.}
 
 \item{game}{The wordler game object.}
+
+\item{allowed_words}{A character vector of valid words for the guess. Guess
+must be in this vector to be allowed. Defaults to words used by the WORDLE
+game online (?wordler::wordle_allowed) if not provided.}
 }
 \value{
 A wordler game object.

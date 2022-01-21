@@ -4,7 +4,13 @@
 \alias{make_new_game}
 \title{Make a new blank wordle game}
 \usage{
-make_new_game()
+make_new_game(target_words = NULL)
+}
+\arguments{
+\item{target_words}{A character vector of potential target words for the
+game. A word will be randomly selected from this vector as the target word
+to be guessed. Defaults to words used by the WORDLE game online
+(?wordler::wordle_answers) if not provided.}
 }
 \value{
 A list representing the Wordle game.
