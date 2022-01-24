@@ -8,7 +8,7 @@
 A character vector of length 2488:
 }
 \source{
-\url{https://CRAN.R-project.org/package=qdapDictionaries}
+\url{https://CRAN.R-project.org/package=qdapDictionaries/}
 }
 \usage{
 qdap_dict

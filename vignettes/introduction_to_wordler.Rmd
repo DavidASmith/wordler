@@ -58,9 +58,16 @@ This returns a list which represents the game state. We'll have a look at the it
 Use `have_a_guess()` to submit a guess of the target word. We'll make a few guesses below.
 
 ```{r}
-game <- have_a_guess("SQUID", game)
-game <- have_a_guess("VIDEO", game)
+game <- have_a_guess("SQUID", game, allowed_words = c(wordle_answers, wordle_allowed))
+game <- have_a_guess("VIDEO", game, allowed_words = c(wordle_answers, wordle_allowed))
 ```
+
+The `allowed_words` argument is a character vector used to validate the guesses. The guess must be present in this vector to be permitted. If the guess is not in `allowed_words`, a message is displayed and you can have another go.
+
+```{r}
+game <- have_a_guess("DONKY", game, allowed_words = c(wordle_answers, wordle_allowed))
+```
+
 
 ## Game state
 
