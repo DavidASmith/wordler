@@ -11,15 +11,17 @@ test_that("Repeated guess letters are compared to target without replacement", {
 })
 
 test_that("Custom dictionary used for target words", {
-  custom_dict <- c("THESE", "WORDS")
+  # Words unlikely to be in any default dictionary
+  custom_dict <- c("XXXXX", "ZZZZZ")
   game <- make_new_game(target_words = custom_dict)
   expect_true(game$target %in% custom_dict)
 })
 
 test_that("Custom dictionary used to validate guess", {
-  game <- make_new_game(target_words = c("LLAMA"))
-  game <- have_a_guess("SQUID", game, "SQUID")
+  # Words unlikely to be in any default dictionary
+  game <- make_new_game(target_words = c("XXXXX"))
+  game <- have_a_guess("ZZZZZ", game, "ZZZZZ")
   expect_equal(game$guess_count, 1)
-  game <- have_a_guess("OKAPI", game, "SQUID")
+  game <- have_a_guess("ZZZZZ", game, "XXXXX")
   expect_equal(game$guess_count, 1)
 })
