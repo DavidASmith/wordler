@@ -7,7 +7,7 @@
     - Documented the wordler class (in the constructor `new_wordler()`).
 - Fixed issue with detection of letters known to be in, or known not to be in, 
   the target word.
-- `make_new_game()` superceded by `new_wordler()`. 
+- `make_new_game()` superseded by `new_wordler()`. 
 
 # Wordler 0.3.0
 - Updates for CRAN resubmission:

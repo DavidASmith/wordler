@@ -7,12 +7,13 @@
 is.wordler(x, ...)
 }
 \arguments{
-\item{x}{An R object}
+\item{x}{an R object}
 
-\item{...}{Additional arguments}
+\item{...}{additional arguments}
 }
 \value{
-Returns TRUE if x is a wordler object, otherwise FALSE.
+Returns \code{TRUE} if x is a 'wordler' object, otherwise
+\code{FALSE}.
 }
 \description{
 Detects wordler objects

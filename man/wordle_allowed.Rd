@@ -6,27 +6,16 @@
 \title{All words used to validate guesses by the original WORDLE game.}
 \format{
 A character vector of length 10657.
-
-A list of length 1.
 }
 \source{
 \url{https://gist.github.com/cfreshman/cdcdf777450c5b5301e439061d29694c}
-
-\url{https://gist.github.com/cfreshman/cdcdf777450c5b5301e439061d29694c}
 }
 \usage{
-wordle_allowed
-
 wordle_allowed
 }
 \description{
 A dataset containing all words which are used to validate guesses by the
 original WORDLE game. Note that this does not include the words which can be
 answers. Theses are held in ?wordle_answers.
-
-A list of keyboard layouts used to show letters known to be not in target
-word, in the target word, and in the right position in the target word.
-Each element must be a list having 3 items, each representing a row of a
-keyboard layout.
 }
 \keyword{datasets}

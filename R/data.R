@@ -44,4 +44,4 @@
 #'
 #' @format A list of length 1.
 #' @source \url{https://gist.github.com/cfreshman/cdcdf777450c5b5301e439061d29694c}
-"wordle_allowed"
+"keyboards"

@@ -18,59 +18,70 @@ new_wordler(
 )
 }
 \arguments{
-\item{target}{The target word for the game. Defaults to a random selection
+\item{target}{the target word for the game. Defaults to a random selection
 from words used by the WORDLE game online (?wordler::wordle_answers) if not
 provided.}
 
-\item{game_over}{A logical indicating if the game is over. Defaults to FALSE.}
+\item{game_over}{a logical indicating if the game is over. Defaults to FALSE.}
 
-\item{game_won}{A logical indicating if the game has been won. In other
+\item{game_won}{a logical indicating if the game has been won. In other
 words, has the target word been correctly guessed.}
 
-\item{guess_count}{An integer representing the number of guesses made so
+\item{guess_count}{an integer representing the number of guesses made so
 far. Defaults to 0.}
 
-\item{guess}{A list (of length 6) of character vectors (each of length 5)
+\item{guess}{a list (of length 6) of character vectors (each of length 5)
 representing the guesses of the target word. Each element of the list
 represents one of six guesses allowed. Each guess defaults to
 \code{c("_", "_", "_", "_", "_")} to represent a guess not yet made.}
 
-\item{assess}{A list (of length 6) of character vectors (each of length 5)
+\item{assess}{a list (of length 6) of character vectors (each of length 5)
 representing an assessment of each letter in each guess.}
 
-\item{keyboard}{A list (of length 3) of character vectors each representing
+\item{keyboard}{a list (of length 3) of character vectors each representing
 a row of a keyboard layout used to visualise the game by \code{print()}.
 Defaults to QWERTY layout.}
 
-\item{letters_known_not_in_word}{A character vector of letters known not to
+\item{letters_known_not_in_word}{a character vector of letters known not to
 be in the target word.}
 
-\item{letters_known_in_word}{A character vector of letters know to be in the
+\item{letters_known_in_word}{a character vector of letters know to be in the
 target word.}
 
-\item{letters_known_in_position}{A character vector of letters known to be
+\item{letters_known_in_position}{a character vector of letters known to be
 in the correct position in the target word.}
 }
 \value{
 An object of class "wordler".
 }
 \description{
-Returns a "wordler" object which holds the state of a wordle game as guesses
-are made. The returned object will have a target word which is selected from
-the default list unless provided in the \code{target_words} argument.
+Returns a "wordler" object which holds the state of a wordler game as
+guesses are made. The returned object will have a target word which is
+selected from the default list unless provided in the \code{target}
+argument.
 }
 \details{
 The wordler object is a list which has the following elements:
 
 \itemize{
+  \item \code{target} - The target word.
   \item \code{game_over} - A logical indicating if the game is over. Set to
   \code{TRUE} if either the word is correctly guessed, or all guesses are
   used.
-  \item \code{game_won}
-  \item \code{guess_count}
-  \item \code{target}
-  \item \code{guess}
-  \item \code{assess}
-  \item \code{keyboard}
+  \item \code{game_won} - A logical indicating if the game has been won
+  (target word correctly guessed).
+  \item \code{guess_count} - The number of guesses made so far.
+  \item \code{guess} - A list of guesses of the target word.
+  \item \code{assess} - A list of assessments of the target word. Note that
+  this represents how the letters in each guess should be displayed when
+  printing the game.
+  \item \code{keyboard} - A list representing the keyboard layout to be used
+  when printing the game state.
+  \item \code{letters_known_not_in_word} - A vector of letters known not to
+  be in the target word based on guesses made so far.
+  \item \code{letters_known_in_word} - A vector of letters known to
+  be in the target word based on guesses made so far.
+  \item \code{letters_known_not_in_word} - A vector of letters known to
+  be in the right position in the target word based on guesses made so far.
 }
 }

@@ -11,7 +11,7 @@ count_freqs(xs, target)
 \code{xs} in \code{target}}
 }
 \value{
-named list of elements of \code{xs} with counts
+Named list of elements of \code{xs} with counts.
 }
 \description{
 Get counts of each letter in the target
