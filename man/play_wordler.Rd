@@ -2,20 +2,24 @@
 % Please edit documentation in R/wordler.R
 \name{play_wordler}
 \alias{play_wordler}
-\title{Play a game of Wordle in the R console}
+\title{Play a game of WORDLE in the console}
 \usage{
 play_wordler(target_words = NULL, allowed_words = NULL)
 }
 \arguments{
-\item{target_words}{A character vector of potential target words for the
+\item{target_words}{character vector of potential target words for the
 game. A word will be randomly selected from this vector as the target word
 to be guessed. Defaults to words used by the WORDLE game online
 (?wordler::wordle_answers) if not provided.}
 
-\item{allowed_words}{A character vector of valid words for the guess. Guess
+\item{allowed_words}{character vector of valid words for the guess. Guess
 must be in this vector to be allowed. Defaults to words used by the WORDLE
 game online (?wordler::wordle_allowed) if not provided.}
 }
+\value{
+No return value. Starts interactive game in console.
+}
 \description{
-Play a game of Wordle in the R console
+Starts an interactive game of WORDLE in the console. Based on WORDLE
+(\url{https://www.powerlanguage.co.uk/wordle/}).
 }

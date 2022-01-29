@@ -1,3 +1,14 @@
+# Wordler 0.3.1
+- Updates for CRAN resubmission:
+    - The list representing game state now has an S3 class - "wordler".
+    - All exported functions now have a documented return value.
+    - All functions which accept and return a "wordler" object are documented 
+    regarding their effects on the "wordler" object.
+    - Documented the wordler class (in the constructor `new_wordler()`).
+- Fixed issue with detection of letters known to be in, or known not to be in, 
+  the target word.
+- `make_new_game()` superseded by `new_wordler()`. 
+
 # Wordler 0.3.0
 - Updates for CRAN resubmission:
     - URL in DESCRIPTION enclosed in angle brackets.
