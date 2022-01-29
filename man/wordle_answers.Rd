@@ -5,7 +5,7 @@
 \alias{wordle_answers}
 \title{All words used as potential answers by the original WORDLE game.}
 \format{
-A character vector of length 2315:
+A character vector of length 2315.
 }
 \source{
 \url{https://gist.github.com/cfreshman/a03ef2cba789d8cf00c08f767e0fad7b/}

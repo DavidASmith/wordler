@@ -22,13 +22,25 @@ ubuntu_dict <- toupper(ubuntu_dict)
 ubuntu_dict
 
 
-# Load words used by original WORDLE game
+# Load words used by original WORDLE game ---------------------------------
+
 wordle_answers <- toupper(readLines("data-raw/wordle-answers-alphabetical.txt"))
 wordle_allowed <- toupper(readLines("data-raw/wordle-allowed-guesses.txt"))
+
+
+
+# Keyboard layouts for printing game to console
+
+keyboards = list(qwerty = list(row1 = c("Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"),
+                           row2 = c("A", "S", "D", "F", "G", "H", "J", "K", "L"),
+                           row3 = c("Z", "X", "C", "V", "B", "N", "M"))
+                 )
+
 
 # Add to package external data --------------------------------------------
 usethis::use_data(qdap_dict,
                   ubuntu_dict,
                   wordle_answers,
                   wordle_allowed,
+                  keyboards,
                   overwrite = TRUE)

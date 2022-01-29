@@ -4,7 +4,7 @@
 \alias{have_a_guess}
 \title{Submit a guess word to the wordler game object}
 \usage{
-have_a_guess(x, game, allowed_words)
+have_a_guess(x, game, allowed_words = NULL)
 }
 \arguments{
 \item{x}{The guess.}

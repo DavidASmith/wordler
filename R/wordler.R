@@ -4,7 +4,13 @@
 #' @param game Wordler game object.
 #'
 #' @return Character vector of guess assessment.
-assess_guess <- function(game){
+  assess_guess <- function(game){
+
+  # Confirm wordler object
+  if(!is.wordler(game)){
+    stop("`game` argument must be a wordler object.")
+  }
+
   # Get required items from game object
   guess <- game$guess[[game$guess_count]]
   target <- unlist(strsplit(game$target, ""))
@@ -64,6 +70,8 @@ count_freqs <- function(xs, target) {
 #' must be in this vector to be allowed. Defaults to words used by the WORDLE
 #' game online (?wordler::wordle_allowed) if not provided.
 #'
+#' @return No return value. Starts interactive game in console.
+#'
 #' @export
 play_wordler <- function(target_words = NULL, allowed_words = NULL){
 
@@ -82,10 +90,10 @@ play_wordler <- function(target_words = NULL, allowed_words = NULL){
   }
 
   # Create a new game
-  game <- make_new_game(target_words)
+  game <- new_wordler()
 
   while(!game$game_over){
-    print_game(game)
+    print(game)
 
     # Ask player to guess a word
     new_guess <- readline("Enter a word: ")
@@ -98,60 +106,137 @@ play_wordler <- function(target_words = NULL, allowed_words = NULL){
 
     # Has the player guessed correctly?
     if(game$game_won){
-      print_game(game)
+      print(game)
       cat("Congratulations, you won!")
       next()
     }
 
     # Are all the guesses used up
     if(game$guess_count == 6){
-      print_game(game)
+      print(game)
       cat("You have used all your guesses.\n")
       cat("The word you were looking for is", game$target)
     }
   }
 }
 
-#' Make a new blank wordle game
+#' Constructs a new object of class "wordler"
 #'
-#' @param target_words A character vector of potential target words for the
-#' game. A word will be randomly selected from this vector as the target word
-#' to be guessed. Defaults to words used by the WORDLE game online
-#' (?wordler::wordle_answers) if not provided.
+#' Returns a "wordler" object which holds the state of a wordle game as guesses
+#' are made. The returned object will have a target word which is selected from
+#' the default list unless provided in the \code{target_words} argument.
 #'
-#' @return A list representing the Wordle game.
+#' The wordler object is a list which has the following elements:
+#'
+#' \itemize{
+#'   \item \code{game_over} - A logical indicating if the game is over. Set to
+#'   \code{TRUE} if either the word is correctly guessed, or all guesses are
+#'   used.
+#'   \item \code{game_won}
+#'   \item \code{guess_count}
+#'   \item \code{target}
+#'   \item \code{guess}
+#'   \item \code{assess}
+#'   \item \code{keyboard}
+#' }
+#'
+#' @param target The target word for the game. Defaults to a random selection
+#' from words used by the WORDLE game online (?wordler::wordle_answers) if not
+#' provided.
+#' @param game_over A logical indicating if the game is over. Defaults to FALSE.
+#' @param game_won A logical indicating if the game has been won. In other
+#' words, has the target word been correctly guessed.
+#' @param guess_count An integer representing the number of guesses made so
+#' far. Defaults to 0.
+#' @param guess A list (of length 6) of character vectors (each of length 5)
+#' representing the guesses of the target word. Each element of the list
+#' represents one of six guesses allowed. Each guess defaults to
+#' \code{c("_", "_", "_", "_", "_")} to represent a guess not yet made.
+#' @param assess A list (of length 6) of character vectors (each of length 5)
+#' representing an assessment of each letter in each guess.
+#' @param keyboard A list (of length 3) of character vectors each representing
+#' a row of a keyboard layout used to visualise the game by \code{print()}.
+#' Defaults to QWERTY layout.
+#' @param letters_known_not_in_word A character vector of letters known not to
+#' be in the target word.
+#' @param letters_known_in_word A character vector of letters know to be in the
+#' target word.
+#' @param letters_known_in_position A character vector of letters known to be
+#' in the correct position in the target word.
+#'
+#' @return An object of class "wordler".
 #' @export
 #'
 #' @examples
-make_new_game <- function(target_words = NULL){
+new_wordler <- function(target = sample(wordler::wordle_answers, 1),
+                        game_over = FALSE,
+                        game_won = FALSE,
+                        guess_count = 0,
+                        guess = lapply(1:6, function(x) unlist(strsplit("_____", ""))),
+                        assess = lapply(1:6, function(x) rep("not_in_word", 5)),
+                        keyboard = wordler::keyboards$qwerty,
+                        letters_known_not_in_word = character(0),
+                        letters_known_in_word = character(0),
+                        letters_known_in_position = character(0)){
 
-  # Take target from default if not specified
-  if(is.null(target_words)){
-    target <- sample(wordler::wordle_answers, 1)
-  } else {
-    target <- sample(target_words, 1)
+  # Validate target argument
+  if(class(target) != "character"){
+    stop("`target` must be of class 'character'")
+  }
+  if(nchar(target) != 5){
+    stop("`target` must have exactly 5 characters")
+  }
+  if(length(target) != 1){
+    stop("`target` must be a character vector of length 1")
   }
 
-  new_game <- list(game_over = FALSE,
-                   game_won = FALSE,
-                   guess_count = 0,
-                   target = target,
-                   guess = list(unlist(strsplit("_____", "")),
-                                unlist(strsplit("_____", "")),
-                                unlist(strsplit("_____", "")),
-                                unlist(strsplit("_____", "")),
-                                unlist(strsplit("_____", "")),
-                                unlist(strsplit("_____", ""))),
-                   assess = list(rep("not_in_word", 5),
-                                 rep("not_in_word", 5),
-                                 rep("not_in_word", 5),
-                                 rep("not_in_word", 5),
-                                 rep("not_in_word", 5),
-                                 rep("not_in_word", 5)),
-                   keyboard = list(row1 = c("Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"),
-                                   row2 = c("A", "S", "D", "F", "G", "H", "J", "K", "L"),
-                                   row3 = c("Z", "X", "C", "V", "B", "N", "M")))
+  # Validate logical arguments
+  if(class(game_over) != "logical" | class(game_won) != "logical"){
+    stop("`game_over` and `game_won` must both be of class 'logical'")
+  }
+
+  # Validate guess
+  if(class(guess) != list() |
+     length(guess != 6) |
+     !all(unlist(lapply(guess, function(x) length(x) == 5)))){
+     stop("`guess` must be a list with six items, each of which is a character vector of length 5")
+  }
+
+  # Validate assess
+  if(class(assess) != list() |
+     length(assess != 6) |
+     !all(unlist(lapply(assess, function(x) length(x) == 5)))){
+    stop("`assess` must be a list with six items, each of which is a character vector of length 5")
+  }
+
+  # Validate keyboard
+  if(class(assess) != list() |
+     length(assess != 6)){
+    stop("`keyboard` must be a list with three items")
+  }
+
+  # Validate letters in word vectors
+  if(class(letters_known_not_in_word) != "character"){
+
+  }
+
+  # Build list to represent game state
+  wordler <- list(target = target,
+                  game_over = game_over,
+                  game_won = game_won,
+                  guess_count = guess_count,
+                  guess = guess,
+                  assess = assess,
+                  keyboard = keyboard,
+                  letters_known_not_in_word = letters_known_not_in_word,
+                  letters_known_in_word = letters_known_in_word,
+                  letters_known_in_position = letters_known_in_position)
+
+  # Set class and return
+  class(wordler) <- "wordler"
+  wordler
 }
+
 
 #' Establish if guess is correct and set game state accordingly
 #'
@@ -188,11 +273,17 @@ is_guess_correct <- function(game){
 #' @export
 #'
 #' @examples
-have_a_guess <- function(x, game, allowed_words){
+have_a_guess <- function(x, game, allowed_words = NULL){
 
   # Game must not be already over
   if(game$game_over){
     message("The game is already over. Start a new one if you want to play again.")
+    return(game)
+  }
+
+  # Default allowed_words
+  if(is.null(allowed_words)){
+    allowed_words <- c(wordle_answers, wordle_allowed)
   }
 
   # Guess must be in word list
@@ -227,6 +318,8 @@ have_a_guess <- function(x, game, allowed_words){
 
 #' Prints instructions to play a wordler game in the console
 #'
+#' @return No return value.
+#'
 #' @examples
 print_instructions <- function(){
   # Introductory instructions
@@ -244,10 +337,12 @@ print_instructions <- function(){
 #'
 #' @param x A wordler game object.
 #'
+#' @return No return value.
+#'
 #' @export
 #'
 #' @examples
-print_game <- function(x){
+print.wordler <- function(x){
 
   game <- x
   keyboard <- game$keyboard
@@ -336,15 +431,15 @@ print_game <- function(x){
 #'
 #' @examples
 update_letters_known_in_word <- function(game){
+  # Target word represented as character vector
+  target <- unlist(strsplit(game$target, ""))
 
-  letters_known_in_word <- mapply(function(guess, assess) guess[assess == "in_word"],
-                                  guess = game$guess,
-                                  assess = game$assess)
-  letters_known_in_word <- unlist(letters_known_in_word)
-  letters_known_in_word <- unique(letters_known_in_word)
+  # Establish letters from all guesses which are in target word
+  letters_known_in_word <- lapply(game$guess, function(x) x[x %in% target])
+  letters_known_in_word <- unique(unlist(letters_known_in_word))
 
+  # Add to game object and return
   game$letters_known_in_word <- letters_known_in_word
-
   game
 }
 
@@ -356,14 +451,18 @@ update_letters_known_in_word <- function(game){
 #'
 #' @examples
 update_letters_known_not_in_word <- function(game){
-  letters_known_not_in_word <- mapply(function(guess, assess) guess[assess == "not_in_word"],
-                                      guess = game$guess,
-                                      assess = game$assess)
-  letters_known_not_in_word <- unlist(letters_known_not_in_word)
-  letters_known_not_in_word <- unique(letters_known_not_in_word)
 
+  # Target word represented as character vector
+  target <- unlist(strsplit(game$target, ""))
+
+  # Establish letters from all guesses which are not in target word
+  letters_known_not_in_word <- lapply(game$guess, function(x) x[!x %in% target])
+  letters_known_not_in_word <- unique(unlist(letters_known_not_in_word))
+  # Remove underscore (used as blanks for guesses not yet made)
+  letters_known_not_in_word <- letters_known_not_in_word[!letters_known_not_in_word == "_"]
+
+  # Add to game object and return
   game$letters_known_not_in_word <- letters_known_not_in_word
-
   game
 }
 
@@ -386,4 +485,17 @@ update_letters_known_in_position <- function(game){
   game$letters_known_in_position <- letters_known_in_position
 
   game
+}
+
+#' Detects wordler objects
+#'
+#' @param x An R object
+#' @param ... Additional arguments
+#'
+#' @return Returns TRUE if x is a wordler object, otherwise FALSE.
+#' @export
+#'
+#' @examples
+is.wordler <- function(x, ...) {
+  class(x) == "wordler"
 }

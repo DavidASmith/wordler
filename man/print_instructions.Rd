@@ -6,6 +6,9 @@
 \usage{
 print_instructions()
 }
+\value{
+No return value.
+}
 \description{
 Prints instructions to play a wordler game in the console
 }

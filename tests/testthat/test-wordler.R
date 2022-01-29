@@ -25,3 +25,11 @@ test_that("Custom dictionary used to validate guess", {
   game <- have_a_guess("ZZZZZ", game, "XXXXX")
   expect_equal(game$guess_count, 1)
 })
+
+test_that("Letters known not to be in word are correctly identified", {
+  game <- make_new_game(target_words = "STAMP")
+  game <- have_a_guess("TROUT", game)
+  expect_equal(game$letters_known_not_in_word, c("R", "O", "U"))
+  game <- have_a_guess("STAGE", game)
+  expect_equal(game$letters_known_not_in_word, c("R", "O", "U", "G", "E"))
+})

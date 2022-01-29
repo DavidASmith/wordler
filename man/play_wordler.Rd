@@ -16,6 +16,9 @@ to be guessed. Defaults to words used by the WORDLE game online
 must be in this vector to be allowed. Defaults to words used by the WORDLE
 game online (?wordler::wordle_allowed) if not provided.}
 }
+\value{
+No return value. Starts interactive game in console.
+}
 \description{
 Play a game of Wordle in the R console
 }

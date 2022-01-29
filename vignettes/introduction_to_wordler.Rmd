@@ -48,7 +48,7 @@ To play a game in the console, call the `play_wordler()` function.
 First, initialise a new game.
 
 ```{r}
-game <- make_new_game()
+game <- new_wordler()
 ```
 
 This returns a list which represents the game state. We'll have a look at the items in this list after we've made a few guesses.
@@ -114,7 +114,7 @@ game$assess
 At any time, we can print the status of the game as follows.
 
 ```{r}
-print_game(game)
+print(game)
 ```
 
 A vector of letters known to _not_ be in the target word is available.
@@ -129,7 +129,7 @@ A vector of letters known to be in the target word is available.
 game$letters_known_in_word
 ```
 
-A vector of letters know to be in the right position in the target word is available.
+A vector of letters known to be in the right position in the target word is available.
 
 ```{r}
 game$letters_known_in_position
