@@ -1,7 +1,7 @@
 Package: wordler
 Type: Package
 Title: The 'WORDLE' Game
-Version: 0.3.1
+Version: 0.3.1.9000
 Authors@R: c(
   person("David", "Smith", email = "david.alex.smith@gmail.com", role = c("aut", "cre")),
   person("Gethin", "Davies", email = "grd.davies@gmail.com", role = "ctb")

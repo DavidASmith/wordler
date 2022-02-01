@@ -32,7 +32,17 @@ Each guess must be a valid word.
 
 ## Installation
 
-You can install directly from github using the devtools R package.
+### CRAN
+
+`wordler` is available on CRAN.
+
+```{r}
+install.packages("wordler")
+```
+
+### Github
+
+You can install the latest version directly from github using the devtools R package.
 
 ```{r}
 # install.packages("devtools")
