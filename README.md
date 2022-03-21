@@ -1,8 +1,9 @@
+# wordler
+
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/DavidASmith/wordler/workflows/R-CMD-check/badge.svg)](https://github.com/DavidASmith/wordler/actions)
+[![CRAN status](https://www.r-pkg.org/badges/version/wordler)](https://CRAN.R-project.org/package=wordler)
 <!-- badges: end -->
-
-# wordler
 
 An R implementation of the popular 
 [WORDLE](https://www.powerlanguage.co.uk/wordle/) game.
@@ -34,7 +35,7 @@ Each guess must be a valid word.
 
 ### CRAN
 
-`wordler` is available on CRAN.
+`wordler` is [available on CRAN](https://cran.r-project.org/package=wordler).
 
 ```{r}
 install.packages("wordler")
@@ -42,9 +43,16 @@ install.packages("wordler")
 
 ### Github
 
-You can install the latest version directly from github using the devtools R package.
+You can install the latest version directly from github using the devtools R 
+package.
 
 ```{r}
 # install.packages("devtools")
 devtools::install_github("DavidASmith/wordler")
 ```
+
+## Further Reading
+
+For more information, see the [vignette](https://cran.r-project.org/web/packages/wordler/vignettes/introduction_to_wordler.html) 
+or [reference manual](https://cran.r-project.org/web/packages/wordler/wordler.pdf) 
+for the latest release.
