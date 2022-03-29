@@ -5,10 +5,10 @@
 \alias{qdap_dict}
 \title{All five-letter words from the Nettalk Corpus Syllable Data Set.}
 \format{
-A character vector of length 2488:
+A character vector of length 2488.
 }
 \source{
-\url{https://CRAN.R-project.org/package=qdapDictionaries}
+\url{https://CRAN.R-project.org/package=qdapDictionaries/}
 }
 \usage{
 qdap_dict

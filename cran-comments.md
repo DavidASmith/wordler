@@ -2,11 +2,9 @@
 
 This is a resubmission. In this version I have:
 
-* Used canonical form of URL for link to qdapDictionaries package on CRAN.
-* Removed redundant phrases in package DESCRIPTION.
-* Added link to original game in package DESCRIPTION.
-* Github URL added to DESCRIPTION.
-* Bug fix - now correctly handles repeated letters in guessed word.
+* Added return value documentation for all exported function.
+* Explicitly defined and documented a "wordler" class to represent game state.
+* Documented how functions modify the wordler object as the game progresses.
 
 ## R CMD check results
 

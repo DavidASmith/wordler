@@ -5,7 +5,7 @@
 \alias{ubuntu_dict}
 \title{All five-letter words from the Ubuntu dictionary.}
 \format{
-A character vector of length 2488:
+A character vector of length 4594.
 }
 \source{
 \url{https://ubuntu.com/}

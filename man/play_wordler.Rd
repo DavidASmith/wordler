@@ -2,15 +2,27 @@
 % Please edit documentation in R/wordler.R
 \name{play_wordler}
 \alias{play_wordler}
-\title{Play a game of Wordle in the R console}
+\title{Play a game of WORDLE in the console}
 \usage{
-play_wordler(hard_mode = FALSE)
+play_wordler(target_words = NULL, allowed_words = NULL, hard_mode = FALSE)
 }
 \arguments{
-\item{hard_mode}{Flag if hard mode should be used. In hard mode each letter
-in a correct position must be in the same position in future guesses, and
-any letters in the word must be used in future guesses.}
+\item{target_words}{character vector of potential target words for the
+game. A word will be randomly selected from this vector as the target word
+to be guessed. Defaults to words used by the WORDLE game online
+(?wordler::wordle_answers) if not provided.}
+
+\item{allowed_words}{character vector of valid words for the guess. Guess
+must be in this vector to be allowed. Defaults to words used by the WORDLE
+game online (?wordler::wordle_allowed) if not provided.}
+
+\item{hard_mode}{logical flag indicating if hard mode should be used. In hard
+mode any revealed hints must be used in subsequent guesses}
+}
+\value{
+No return value. Starts interactive game in console.
 }
 \description{
-Play a game of Wordle in the R console
+Starts an interactive game of WORDLE in the console. Based on WORDLE
+(\url{https://www.powerlanguage.co.uk/wordle/}).
 }
