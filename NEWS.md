@@ -1,5 +1,6 @@
-# wordler 0.3.1.9000
-- 
+# wordler 0.3.1.9001
+- Added 'hard mode'. In hard mode, any revealed hints must be used in 
+  subsequent guesses.
 
 # wordler 0.3.1
 - Updates for CRAN resubmission:
