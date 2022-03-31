@@ -73,10 +73,71 @@
 #' @param xs,target we count the occurrences of each element in
 #'     \code{xs} in \code{target}
 #' @return Named list of elements of \code{xs} with counts.
+#' @noRd
 count_freqs <- function(xs, target) {
   xs <- unique(xs)
   names(xs) <- xs
   lapply(xs, function(x) sum(target == x))
+}
+
+#' Check if current guess complies with hard_mode rules
+#'
+#' @param guess The guess
+#' @param game Wordler game object.
+#' @return bool
+check_guess_hard_mode <- function(guess, game) {
+
+  if (!is.wordler(game)) {
+    stop("`game` argument must be of class 'wordler'.")
+  }
+
+  if (!game$hard_mode) {
+    return(TRUE)
+  }
+  if (game$guess_count == 0) {
+    return(TRUE)
+  }
+  last_assess <- game$assess[[game$guess_count]]
+  last_guess <- game$guess[[game$guess_count]]
+  # Require in_position letters in last guess to match guess
+  in_position <- last_assess == "in_position"
+  guess_match <- last_guess == guess
+  if (!all(ifelse(in_position, guess_match, TRUE))) {
+    wrong <- !guess_match & in_position
+    mapply(function(wrong, index) {
+      if (wrong) {
+        message(get_ordinal(index), " letter must be '", last_guess[[index]], "'")
+      }
+    },
+    wrong, seq_along(wrong)
+    )
+    return(FALSE)
+  }
+  # Require in_word letters in last guess to be in guess
+  in_word <- last_assess == "in_word"
+  in_guess <- last_guess %in% guess
+  if (!all(ifelse(in_word, in_guess, TRUE))) {
+    wrong <- !in_guess & in_word
+    mapply(function(wrong, index) {
+      if (wrong) {
+        message("'", last_guess[[index]], "' must be in word")
+      }
+    },
+    wrong, seq_along(wrong)
+    )
+    return(FALSE)
+  }
+
+  # Else all good
+  return(TRUE)
+}
+
+#' Convert integers 1:5 into an ordinal string
+#' @param x integer
+#' @return string ordinal
+#' @noRd
+get_ordinal <- function(x) {
+  switch(x, "1st", "2nd", "3rd", "4th", "5th")
 }
 
 
@@ -92,11 +153,14 @@ count_freqs <- function(xs, target) {
 #' @param allowed_words character vector of valid words for the guess. Guess
 #' must be in this vector to be allowed. Defaults to words used by the WORDLE
 #' game online (?wordler::wordle_allowed) if not provided.
+#' @param hard_mode logical flag indicating if hard mode should be used. In hard
+#' mode any revealed hints must be used in subsequent guesses
 #'
 #' @return No return value. Starts interactive game in console.
 #'
+#'
 #' @export
-play_wordler <- function(target_words = NULL, allowed_words = NULL){
+play_wordler <- function(target_words = NULL, allowed_words = NULL, hard_mode = FALSE){
 
   print_instructions()
 
@@ -113,7 +177,7 @@ play_wordler <- function(target_words = NULL, allowed_words = NULL){
   }
 
   # Create a new game
-  game <- new_wordler(target = sample(target_words, 1))
+  game <- new_wordler(target = sample(target_words, 1), hard_mode = hard_mode)
 
   while(!game$game_over){
     print(game)
@@ -172,6 +236,9 @@ play_wordler <- function(target_words = NULL, allowed_words = NULL){
 #'   be in the target word based on guesses made so far.
 #'   \item \code{letters_known_not_in_word} - A vector of letters known to
 #'   be in the right position in the target word based on guesses made so far.
+#'   \item \code{hard_mode} - A logical indicating if the game is being played
+#'   in hard_mode. In hard mode any revealed hints must be used in subsequent
+#'   guesses
 #' }
 #'
 #' @param target the target word for the game. Defaults to a random selection
@@ -197,6 +264,7 @@ play_wordler <- function(target_words = NULL, allowed_words = NULL){
 #' target word.
 #' @param letters_known_in_position a character vector of letters known to be
 #' in the correct position in the target word.
+#' @param hard_mode Flag if game is in hard mode
 #'
 #' @return An object of class "wordler".
 #' @export
@@ -212,7 +280,8 @@ new_wordler <- function(target = sample(wordler::wordle_answers, 1),
                         keyboard = wordler::keyboards$qwerty,
                         letters_known_not_in_word = character(0),
                         letters_known_in_word = character(0),
-                        letters_known_in_position = character(0)){
+                        letters_known_in_position = character(0),
+                        hard_mode = FALSE){
 
   # Validate target argument
   if(class(target) != "character"){
@@ -226,8 +295,8 @@ new_wordler <- function(target = sample(wordler::wordle_answers, 1),
   }
 
   # Validate logical arguments
-  if(class(game_over) != "logical" | class(game_won) != "logical"){
-    stop("`game_over` and `game_won` must both be of class 'logical'")
+  if (!all(vapply(c(game_over, game_won, hard_mode), is.logical, logical(1L)))) {
+    stop("`game_over`, `game_won` and `hard_mode` must be of class 'logical'")
   }
 
   # Validate guess
@@ -270,7 +339,8 @@ new_wordler <- function(target = sample(wordler::wordle_answers, 1),
                   keyboard = keyboard,
                   letters_known_not_in_word = letters_known_not_in_word,
                   letters_known_in_word = letters_known_in_word,
-                  letters_known_in_position = letters_known_in_position)
+                  letters_known_in_position = letters_known_in_position,
+                  hard_mode = hard_mode)
 
   # Set class and return
   class(wordler) <- "wordler"
@@ -350,29 +420,35 @@ have_a_guess <- function(x, game, allowed_words = NULL){
   # Guess must be in word list
   if(!(x %in% allowed_words)){
     message("Your word isn't in the list of valid words. Try again.")
-  } else {
+    return(game)
+  }
 
-    # Player has used a guess
-    game$guess_count <- game$guess_count + 1
 
-    # Add guess to game
-    game$guess[[game$guess_count]] <- unlist(strsplit(x, ""))
+  if (!check_guess_hard_mode(unlist(strsplit(x, "")), game)) {
+    return(game)
+  }
 
-    # Assess guess
-    game <- assess_guess(game)
 
-    # Update known letters
-    game <- update_letters_known_not_in_word(game)
-    game <- update_letters_known_in_word(game)
-    game <- update_letters_known_in_position(game)
+  # Player has used a guess
+  game$guess_count <- game$guess_count + 1
 
-    # Is guess correct?
-    game <- is_guess_correct(game)
+  # Add guess to game
+  game$guess[[game$guess_count]] <- unlist(strsplit(x, ""))
 
-    # Are guesses all used?
-    if(game$guess_count == 6){
-      game$game_over <- TRUE
-    }
+  # Assess guess
+  game <- assess_guess(game)
+
+  # Update known letters
+  game <- update_letters_known_not_in_word(game)
+  game <- update_letters_known_in_word(game)
+  game <- update_letters_known_in_position(game)
+
+  # Is guess correct?
+  game <- is_guess_correct(game)
+
+  # Are guesses all used?
+  if (game$guess_count == 6) {
+    game$game_over <- TRUE
   }
   game
 }

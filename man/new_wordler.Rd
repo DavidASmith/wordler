@@ -14,7 +14,8 @@ new_wordler(
   keyboard = wordler::keyboards$qwerty,
   letters_known_not_in_word = character(0),
   letters_known_in_word = character(0),
-  letters_known_in_position = character(0)
+  letters_known_in_position = character(0),
+  hard_mode = FALSE
 )
 }
 \arguments{
@@ -50,6 +51,8 @@ target word.}
 
 \item{letters_known_in_position}{a character vector of letters known to be
 in the correct position in the target word.}
+
+\item{hard_mode}{Flag if game is in hard mode}
 }
 \value{
 An object of class "wordler".
@@ -83,5 +86,8 @@ The wordler object is a list which has the following elements:
   be in the target word based on guesses made so far.
   \item \code{letters_known_not_in_word} - A vector of letters known to
   be in the right position in the target word based on guesses made so far.
+  \item \code{hard_mode} - A logical indicating if the game is being played
+  in hard_mode. In hard mode any revealed hints must be used in subsequent
+  guesses
 }
 }

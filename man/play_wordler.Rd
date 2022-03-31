@@ -4,7 +4,7 @@
 \alias{play_wordler}
 \title{Play a game of WORDLE in the console}
 \usage{
-play_wordler(target_words = NULL, allowed_words = NULL)
+play_wordler(target_words = NULL, allowed_words = NULL, hard_mode = FALSE)
 }
 \arguments{
 \item{target_words}{character vector of potential target words for the
@@ -15,6 +15,9 @@ to be guessed. Defaults to words used by the WORDLE game online
 \item{allowed_words}{character vector of valid words for the guess. Guess
 must be in this vector to be allowed. Defaults to words used by the WORDLE
 game online (?wordler::wordle_allowed) if not provided.}
+
+\item{hard_mode}{logical flag indicating if hard mode should be used. In hard
+mode any revealed hints must be used in subsequent guesses}
 }
 \value{
 No return value. Starts interactive game in console.
