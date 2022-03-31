@@ -36,9 +36,14 @@ library(wordler)
 
 To play a game in the console, call the `play_wordler()` function.
 
-```{r}
-# Commented out so vignette can be generated
-#play_wordler()
+```{r, eval=FALSE}
+play_wordler()
+```
+
+You can emulate the original game's _Hard mode_ by passing `hard_mode=TRUE`.
+
+```{r, eval=FALSE}
+play_wordler(hard_mode = TRUE)
 ```
 
 # Playing a game programmatically
